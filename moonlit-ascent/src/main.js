@@ -478,7 +478,7 @@ function render(t){
 
   // Moon with layered bloom shells.
   const moonPulse=1+Math.sin(t*.0007)*.035;
-  draw(SPHERE,[9.5,18,-58],[5.2*moonPulse,5.2*moonPulse,5.2*moonPulse,[1.0,.97,.86],.45);
+  draw(SPHERE,[9.5,18,-58],[5.2*moonPulse,5.2*moonPulse,5.2*moonPulse],[1.0,.97,.86],.45);
   draw(SPHERE,[9.5,18,-57.2],[8.0,8.0,.55],[.07,.33,.58],.10+.03*pulse);
   draw(SPHERE,[9.5,18,-56.4],[10.5,10.5,.22],[.03,.16,.32],.05);
 
