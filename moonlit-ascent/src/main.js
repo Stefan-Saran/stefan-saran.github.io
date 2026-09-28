@@ -222,6 +222,7 @@ for(let layer=0;layer<4;layer++){
     x:i*15+rand(-4,4),z:-72-layer*18+rand(-5,5),w:rand(10,18),h:rand(8,17),
     c:layer===0?[.025,.10,.25]:layer===1?[.03,.15,.31]:layer===2?[.04,.19,.35]:[.05,.24,.40],
     phase:rand(0,TAU)
+  });
 }
 const lanterns=[[-10,1.1,-50,1.1], [12,1.1,-58,1], [-18,1.0,-67,.95], [28,1.2,-62,1], [-30,1.1,-57,1.05]];
 const particles=Array.from({length:105},()=>({x:rand(-42,42),y:rand(1,28),z:rand(-165,12),s:rand(.035,.105),drift:rand(.12,.42),phase:rand(0,TAU)}));
