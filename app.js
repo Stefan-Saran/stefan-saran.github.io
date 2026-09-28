@@ -1,3 +1,5 @@
+// Fresh-path recovery: remove stale service workers/caches from this origin before the app starts.
+(async()=>{try{if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)));}}catch(_){}})();
 const form=document.getElementById('form'),email=document.getElementById('email'),password=document.getElementById('password'),message=document.getElementById('message'),modal=document.getElementById('modal'),reveal=document.getElementById('reveal'),clock=document.getElementById('clock');
 setInterval(()=>clock.textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'}),1000);
 reveal.addEventListener('click',()=>{const show=password.type==='password';password.type=show?'text':'password';reveal.textContent=show?'HIDE':'SHOW';reveal.setAttribute('aria-label',show?'Hide password':'Show password')});
