@@ -159,7 +159,7 @@ function sphere(seg=16){
 }
 const CUBE=cube(),SPHERE=sphere();
 
-let P,V,cam=[0,7.2,22];
+let P=perspective(48*Math.PI/180,Math.max(1,innerWidth/innerHeight),.1,250),V=lookAt(0,7.2,22,0,2.8,-46),cam=[0,7.2,22];
 function draw(mesh,pos,sc,color,emi=0,rot=0){
   const model=mul(translate(pos[0],pos[1],pos[2]),mul(rotateY(rot),scale(sc[0],sc[1],sc[2])));
   const mvp=mul(mul(P,V),model);
