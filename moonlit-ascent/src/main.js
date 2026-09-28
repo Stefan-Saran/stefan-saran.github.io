@@ -31,8 +31,8 @@ const state = {
 };
 
 const CFG = {
-  lane: 2.35,
-  platformW: 2.15,
+  lane: 2.65,
+  platformW: 2.05,
   platformD: 3.0,
   gravity: 22.5,
   jump: 10.4,
@@ -219,12 +219,12 @@ function seed(){
 const mountains=[];
 for(let layer=0;layer<4;layer++){
   for(let i=-7;i<=7;i++) mountains.push({
-    x:i*15+rand(-4,4),z:-72-layer*18+rand(-5,5),w:rand(10,18),h:rand(8,17),
+    x:i*12.5+rand(-3,3),z:-42-layer*9+rand(-3,3),w:rand(7,13),h:rand(5,11),
     c:layer===0?[.025,.10,.25]:layer===1?[.03,.15,.31]:layer===2?[.04,.19,.35]:[.05,.24,.40],
     phase:rand(0,TAU)
   });
 }
-const lanterns=[[-10,1.1,-50,1.1], [12,1.1,-58,1], [-18,1.0,-67,.95], [28,1.2,-62,1], [-30,1.1,-57,1.05]];
+const lanterns=[[-9,2.0,-31,1.05], [10,2.0,-35,1.0], [-15,1.6,-44,.9], [18,1.9,-48,.95], [-24,1.6,-40,.9]];
 const particles=Array.from({length:105},()=>({x:rand(-42,42),y:rand(1,28),z:rand(-165,12),s:rand(.035,.105),drift:rand(.12,.42),phase:rand(0,TAU)}));
 
 // -----------------------------------------------------------------------------
@@ -478,30 +478,34 @@ function render(t){
 
   // Moon with layered bloom shells.
   const moonPulse=1+Math.sin(t*.0007)*.035;
-  draw(SPHERE,[36,31,-104],[7.0*moonPulse,7.0*moonPulse,7.0*moonPulse],[1.0,.97,.86],.45);
-  draw(SPHERE,[36,31,-103.2],[10.8,10.8,.55],[.07,.33,.58],.10+.03*pulse);
-  draw(SPHERE,[36,31,-102.4],[14.2,14.2,.22],[.03,.16,.32],.05);
+  draw(SPHERE,[9.5,18,-58],[5.2*moonPulse,5.2*moonPulse,5.2*moonPulse,[1.0,.97,.86],.45);
+  draw(SPHERE,[9.5,18,-57.2],[8.0,8.0,.55],[.07,.33,.58],.10+.03*pulse);
+  draw(SPHERE,[9.5,18,-56.4],[10.5,10.5,.22],[.03,.16,.32],.05);
 
   // Water-like reflective field.
   const ripple=Math.sin(t*.0008)*.06;
   draw(CUBE,[0,-.6,-75],[46,.36,82],[.018,.15,.32],.16+ripple);
   for(let i=-3;i<=3;i++) draw(CUBE,[i*10,0.02,-34-i*8],[7.0,.016,.08],[.08,.44,.64],.26);
 
+  // Layered cyan mist hugging the waterline.
+  draw(SPHERE,[0,2.7,-32],[20,2.2,1.8],[.04,.25,.42],.22);
+  draw(SPHERE,[-7,2.3,-42],[24,2.0,2.0],[.035,.18,.34],.13);
+  draw(SPHERE,[10,2.5,-52],[22,2.0,2.2],[.04,.20,.38],.11);
   // Distant mountain layers / misty silhouettes.
   for(const m of mountains){
     const sway=Math.sin(t*.0003+m.phase)*.15;
-    draw(CUBE,[m.x+sway,m.h*.42,m.z],[m.w,m.h*.42,m.w*.34],m.c,.05);
+    draw(SPHERE,[m.x+sway,m.h*.38,m.z],[m.w,m.h*.62,m.w*.28],m.c,.035);
   }
 
   // Fortress on left + tiered pagoda on right.
   const architecturePulse=.08+0.04*Math.sin(t*.0008);
-  draw(CUBE,[-31,4.0,-78],[15,4,4],[.018,.075,.20],architecturePulse);
-  draw(CUBE,[-37,6.6,-77],[3,6.6,4],[.023,.10,.24],architecturePulse+.03);
-  for(let i=0;i<4;i++) draw(CUBE,[-37,2.4+i*2.7,-77],[4.4-i*.45,.10,4.8-i*.5],[.025,.11,.24],.07);
-  draw(CUBE,[27,4,-72],[7,4,4],[.018,.075,.19],.08);
-  for(let i=0;i<4;i++){
-    const yy=6+i*2.15;const s=5.5-i*.95;
-    draw(CUBE,[27,yy,-72],[s,.18,3.8-i*.45],[.018,.08,.20],.10+i*.02);
+  draw(CUBE,[-18,3.2,-39],[9,3.2,3.2],[.012,.055,.16],architecturePulse);
+  draw(CUBE,[-22,5.5,-39],[1.9,5.5,2.5],[.018,.075,.20],architecturePulse+.05);
+  for(let i=0;i<4;i++) draw(CUBE,[-22,2.0+i*2.15,-39],[3.2-i*.28,.11,3.3-i*.34],[.02,.09,.22],.09);
+  draw(CUBE,[13,2.8,-34],[5.2,2.8,3.0],[.012,.055,.16],.10);
+  for(let i=0;i<5;i++){
+    const yy=4.2+i*1.65;const ss=4.6-i*.72;
+    draw(CUBE,[13,yy,-34],[ss,.15,2.9-i*.32],[.018,.075,.20],.12+i*.025);
   }
 
   // Bamboo silhouettes on upper left, moving very slightly.
@@ -512,8 +516,8 @@ function render(t){
   }
 
   // Glowing guide rails and path accents.
-  draw(CUBE,[-5.7,-.05,-68],[.055,.08,84],[.08,.65,.98],1.35);
-  draw(CUBE,[5.7,-.05,-68],[.055,.08,84],[.08,.65,.98],1.35);
+  draw(CUBE,[-6.6,-.05,-68],[.055,.08,84],[.08,.65,.98],1.35);
+  draw(CUBE,[6.6,-.05,-68],[.055,.08,84],[.08,.65,.98],1.35);
   for(let i=0;i<12;i++){
     const z=-15-i*11+(state.distance*.36%11);const y=.07+Math.sin(t*.0015+i)*.02;
     draw(CUBE,[-4.95,y,z],[.06,.05,.45],[.08,.58,.72],.75);
@@ -522,9 +526,9 @@ function render(t){
 
   // Foreground launch pad stays locked to the camera, matching the reference composition.
   const starterGlow=.95+Math.sin(t*.0022)*.08;
-  draw(CUBE,[0,.02,CFG.playerZ],[1.45,.20,1.75],[.025,.25,.43],1.05);
-  draw(CUBE,[0,.245,CFG.playerZ],[1.55,.065,1.84],[.10,.90,1],starterGlow*1.22);
-  draw(CUBE,[0,.35,CFG.playerZ],[1.27,.018,1.52],[.32,.98,1],starterGlow*.35);
+  draw(CUBE,[0,.02,CFG.playerZ],[1.25,.20,1.55],[.025,.25,.43],1.05);
+  draw(CUBE,[0,.245,CFG.playerZ],[1.38,.065,1.62],[.10,.90,1],starterGlow*1.22);
+  draw(CUBE,[0,.35,CFG.playerZ],[1.13,.018,1.34],[.32,.98,1],starterGlow*.35);
 
   // Platforms: layered base + pulsing top + shadow/halo.
   for(const p of platforms){
@@ -562,19 +566,19 @@ function render(t){
   // Player: squash/stretch + halo.
   const lift=Math.sin(t*.006)*.025;
   const glow=3.3+player.landingFlash*2.5;
-  draw(SPHERE,[player.x,player.y+lift,playerYWorldZ],[.68,.68*player.scaleY,.68],[.96,1,1],glow,player.rot);
+  draw(SPHERE,[player.x,player.y+lift,playerYWorldZ],[.78,.78*player.scaleY,.78],[.96,1,1],glow,player.rot);
   draw(SPHERE,[player.x,player.y-.12,playerYWorldZ],[1.28,1.28,.36],[.10,.62,1],1.15,player.tilt);
   player.landingFlash=Math.max(0,player.landingFlash-.045);
 
   // Camera: responsive follow, subtle forward cinematic sway and landing shake.
   const forwardSway=Math.sin(t*.0007)*.24;
   const targetX=player.x*.28;
-  let ex=smooth(cam[0],targetX,8,0.016), ey=smooth(cam[1],7.25+(player.y-1.35)*.18,7,0.016), ez=smooth(cam[2],playerYWorldZ()+15.3,7,0.016);
+  let ex=smooth(cam[0],targetX,9,0.016), ey=smooth(cam[1],7.8+(player.y-1.35)*.20,8,0.016), ez=smooth(cam[2],playerYWorldZ()+14.2,9,0.016);
   if(shake>0){ex+=(Math.random()-.5)*shake;ey+=(Math.random()-.5)*shake*.45;shake*=.86;}else shake*=.9;
   if(state.mode!=='playing'){ex=smooth(ex,0,2,.016);ey=smooth(ey,7.8,2,.016);ez=smooth(ez,22,2,.016);}
   ex+=forwardSway;cam=[ex,ey,ez];
   P=perspective((innerWidth<700?52:48)*Math.PI/180,canvas.width/canvas.height,.1,250);
-  V=lookAt(ex,ey,ez,player.x*.08,2.8,playerYWorldZ()-46);
+  V=lookAt(ex,ey,ez,player.x*.08,4.9,playerYWorldZ()-38);
 }
 
 // -----------------------------------------------------------------------------
